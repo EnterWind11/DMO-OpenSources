@@ -1,26 +1,33 @@
 ﻿using Yggdrasil.Interfaces;
 using Yggdrasil.Server.Network;
 
-namespace LoginServer.Packets.Read;
-
-public class ServerListReadPacket : IReadPacket
+namespace LoginServer.Packets.Read
 {
-    private readonly IGrainFactory _grainFactory;
-    public int PacketType => 1701;
-    
-    public ServerListReadPacket(IGrainFactory grainFactory)
+    // Define a classe ServerListReadPacket, que lê a lista de servidores.
+    public class ServerListReadPacket : IReadPacket
     {
-        _grainFactory = grainFactory;
-    }
+        private readonly IGrainFactory _grainFactory; // Interface para criar grãos (componentes distribuídos).
+        public int PacketType => 1701; // Define o tipo de pacote. Cada pacote tem um identificador único.
 
-    public IWritePacket Prepare(PacketReader reader, ref ClientDataEventArgs e)
-    {
-        var characters = _grainFactory
-            .GetGrain<ICharacterManagerGrain>(((LoginClient)e.Client.User).AccountId)
-            .FindAllAsync()
-            .GetAwaiter()
-            .GetResult();
+        // Construtor que recebe uma fábrica de grãos, que será usada para obter os grãos necessários.
+        public ServerListReadPacket(IGrainFactory grainFactory)
+        {
+            _grainFactory = grainFactory;
+        }
 
-        return new ServerListWritePacket(ref e, characters);
+        // Método para preparar o pacote de leitura. Ele lê os dados do pacote e retorna um pacote de escrita.
+        public IWritePacket Prepare(PacketReader reader, ref ClientDataEventArgs e)
+        {
+            // Obtém o grão para gerenciar os personagens usando a interface ICharacterManagerGrain.
+            // Usa o AccountId do usuário atual para encontrar todos os personagens associados.
+            var characters = _grainFactory
+                .GetGrain<ICharacterManagerGrain>(((LoginClient)e.Client.User).AccountId)
+                .FindAllAsync()
+                .GetAwaiter()
+                .GetResult();
+
+            // Retorna um novo pacote de escrita ServerListWritePacket, que inclui a lista de servidores e personagens.
+            return new ServerListWritePacket(ref e, characters);
+        }
     }
 }

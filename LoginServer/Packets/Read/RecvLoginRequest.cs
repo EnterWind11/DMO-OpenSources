@@ -47,6 +47,7 @@ namespace LoginServer.Packets.Read
                 loginClient.Username = Convert.ToString(validationResult.UserData["username"]);
                 loginClient.SecondaryPassword = Convert.ToString(validationResult.UserData["2pass"]);
                 loginClient.SubType = Convert.ToByte(validationResult.UserData["SubType"]);
+                args.Client.SendAsync((new HashCheck()).ToArray());
                 return new LoginRequestWrite(0, loginClient.SubType);
             }
             else
