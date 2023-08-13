@@ -65,6 +65,7 @@ public sealed class LoginServers : ServerBase
     {
         using var reader = new PacketReader(data);
 
+        //TODO Local onde faz o localizão do Packet Type e lança para classe responsavel pelo controle caso não seja localizado vai cair no switch type 
         if (_readPackets.Any(a => a.PacketType == reader.Type))
         {
             await e.Client.SendAsync(_readPackets.First(a => a.PacketType == reader.Type).Prepare(reader, ref e)
@@ -74,17 +75,6 @@ public sealed class LoginServers : ServerBase
         switch (reader.Type)
         {
             case -3:
-                break;
-            case 3301:
-                uint version = reader.ReadUInt();
-                var userType = LoginClient.ExtractUserType(reader);
-                var username = LoginClient.ExtractUsername(reader);
-                var password = LoginClient.ExtractPassword(reader);
-                var cpu = LoginClient.ExtractCpu(reader);
-                var gpu = LoginClient.ExtractGpu(reader);
-                var memoriaram = reader.ReadInt() / 1000;
-                var Windows = LoginClient.ExtractWindow(reader);
-                var VersionClient = LoginClient.ExtractVersion(reader);
                 break;
             default:
                 _logger.LogInformation("");

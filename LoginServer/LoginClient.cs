@@ -9,14 +9,11 @@ public class LoginClient : IUser
     public IClient Client { get; set; }
     
     public uint AccountId { get; set; }
-    public int UniqueId { get; set; }
-    public int AccessLevel { get; set; }
-    
     public string Username { get; set; }
     public string Password { get; set; }
     public string SecondaryPassword { get; set; }
-    
     public int Characters { get; set; }
+    public byte SubType;
 
     public LoginClient(IClient client)
     {
