@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageReference Include="Microsoft.Orleans.Core.Abstractions" Version="7.2.1" />
+    <PackageReference Include="Microsoft.Orleans.Runtime" Version="7.2.1" />
     <PackageReference Include="Microsoft.Orleans.Sdk" Version="7.2.1" />
     <PackageReference Include="Npgsql" Version="7.0.4" />
   </ItemGroup>

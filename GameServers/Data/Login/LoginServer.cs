@@ -2,6 +2,7 @@
 using LoginServer.Packets.Read;
 using System.Net.Sockets;
 using System.Text;
+using Yggdrasil.Enum;
 using Yggdrasil.Server;
 using Yggdrasil.Server.Network;
 
@@ -66,10 +67,12 @@ public sealed class LoginServers : ServerBase
         using var reader = new PacketReader(data);
 
         //TODO Local onde faz o localizão do Packet Type e lança para classe responsavel pelo controle caso não seja localizado vai cair no switch type 
-        if (_readPackets.Any(a => a.PacketType == reader.Type))
+        if (_readPackets.Any(a => a.PacketType == (pLogin)reader.Type))
         {
-            await e.Client.SendAsync(_readPackets.First(a => a.PacketType == reader.Type).Prepare(reader, ref e)
-                .Construct());
+            var packet = _readPackets.First(a => a.PacketType == (pLogin)reader.Type);
+            var writePacket = await packet.PrepareAsync(reader, e); // Aguarde a conclusão da tarefa
+            var result = writePacket.Construct(); // Chame o método Construct no resultado
+            await e.Client.SendAsync(result); // Envie o resultado
             return;
         }
         switch (reader.Type)

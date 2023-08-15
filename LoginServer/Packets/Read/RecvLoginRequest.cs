@@ -11,14 +11,21 @@ using Yggdrasil.Enum;
 using Orleans.Serialization.Buffers;
 using LoginServer.Packets.Write;
 using System.Data;
+using Yggdrasil.Interfaces;
 
 namespace LoginServer.Packets.Read
 {
     public class RecvLoginRequest : IReadPacket
     {
-        public int PacketType => 3301;
+        private readonly IGrainFactory _grainFactory; // Adicionar a fábrica de grãos
 
-        public IWritePacket Prepare(PacketReader reader, ref ClientDataEventArgs args)
+        public RecvLoginRequest(IGrainFactory grainFactory) // Construtor para aceitar a fábrica de grãos
+        {
+            _grainFactory = grainFactory;
+        }
+        public pLogin PacketType => pLogin.Request;
+
+        public async Task<IWritePacket> PrepareAsync(PacketReader reader, ClientDataEventArgs e)
         {
 
             uint version = reader.ReadUInt();
@@ -31,31 +38,22 @@ namespace LoginServer.Packets.Read
             var Windows = LoginClient.ExtractWindow(reader);
             var VersionClient = LoginClient.ExtractVersion(reader);
 
-            // Cria uma instância da classe BaseDB
-            BaseDB db = new BaseDB();
+            var character = await _grainFactory.GetGrain<IAccountManagerGrain>(0)
+                    .FindAsync(username, password);
 
-            // Criar uma instância da classe UserAuthenticationQuery, passando a instância de BaseDB
-            UserAuthenticationQuery userAuthQuery = new UserAuthenticationQuery(db);
+            if (character == null)
+                character = await _grainFactory.GetGrain<IAccountManagerGrain>(0)
+                    .CreateAsync(username, password);
 
-            // Chamar o método Validate
-            UserValidationResult validationResult = userAuthQuery.Validate(username, password);
-            // Verificar o resultado
-            if (validationResult.Status == LoginRequestStatusEnum.Success)
-            {
-                var loginClient = (LoginClient)args.Client.User;
-                loginClient.AccountId = Convert.ToUInt32(validationResult.UserData["AccountId"]);
-                loginClient.Username = Convert.ToString(validationResult.UserData["username"]);
-                loginClient.SecondaryPassword = Convert.ToString(validationResult.UserData["2pass"]);
-                loginClient.SubType = Convert.ToByte(validationResult.UserData["SubType"]);
-                args.Client.SendAsync((new HashCheck()).ToArray());
-                return new LoginRequestWrite(0, loginClient.SubType);
-            }
-            else
-            {
-
-            }
-
-            return null; // Altere isso de acordo com a necessidade.
+            var loginClient = (LoginClient)e.Client.User;
+            //loginClient.UniqueId = character!.UniqueId;
+            loginClient.AccountId = character!.AccountId;
+            loginClient.SecondaryPassword = character!.SecurityCode;
+            loginClient.Characters = (await _grainFactory
+                .GetGrain<ICharacterManagerGrain>(character!.AccountId)
+                .FindAllAsync()).Count;
+            e.Client.SendAsync((new HashCheck()).ToArray());
+            return new LoginRequestWrite(0, loginClient.SubType);
         }
     }
 }

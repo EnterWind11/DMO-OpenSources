@@ -1,4 +1,5 @@
-﻿using Yggdrasil.Interfaces;
+﻿using Yggdrasil.Enum;
+using Yggdrasil.Interfaces;
 using Yggdrasil.Server.Network;
 
 namespace LoginServer.Packets.Read
@@ -7,7 +8,7 @@ namespace LoginServer.Packets.Read
     public class ServerListReadPacket : IReadPacket
     {
         private readonly IGrainFactory _grainFactory; // Interface para criar grãos (componentes distribuídos).
-        public int PacketType => 1701; // Define o tipo de pacote. Cada pacote tem um identificador único.
+        public pLogin PacketType => pLogin.ClusterList; // Define o tipo de pacote. Cada pacote tem um identificador único.
 
         // Construtor que recebe uma fábrica de grãos, que será usada para obter os grãos necessários.
         public ServerListReadPacket(IGrainFactory grainFactory)
@@ -16,7 +17,7 @@ namespace LoginServer.Packets.Read
         }
 
         // Método para preparar o pacote de leitura. Ele lê os dados do pacote e retorna um pacote de escrita.
-        public IWritePacket Prepare(PacketReader reader, ref ClientDataEventArgs e)
+        public async Task<IWritePacket> PrepareAsync(PacketReader reader, ClientDataEventArgs e)
         {
             // Obtém o grão para gerenciar os personagens usando a interface ICharacterManagerGrain.
             // Usa o AccountId do usuário atual para encontrar todos os personagens associados.

@@ -1,4 +1,6 @@
-﻿namespace Yggdrasil.Server.Network;
+﻿using Yggdrasil.Enum;
+
+namespace Yggdrasil.Server.Network;
 
 public enum Direction
 {
@@ -14,10 +16,10 @@ public interface IPacket
 public interface IReadPacket : IPacket
 {
     Direction IPacket.Type => Direction.Read;
-    
-    int PacketType { get; }
-    
-    IWritePacket Prepare(PacketReader reader, ref ClientDataEventArgs args);
+
+    pLogin PacketType { get; }
+
+    Task<IWritePacket> PrepareAsync(PacketReader reader, ClientDataEventArgs args); // Método assíncrono
 }
 
 public interface IWritePacket : IPacket
