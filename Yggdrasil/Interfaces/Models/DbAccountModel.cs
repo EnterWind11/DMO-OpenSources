@@ -16,7 +16,7 @@ public class DbAccountModel
     public string Password { get; set; }
     
     [Id(4)]
-    public string SecurityCode { get; set; } = "c4ca4238a0b923820dcc509a6f75849b";
+    public string SecurityCode { get; set; } = "e10adc3949ba59abbe56e057f20f883e";  //2-Pass em md5 senha padrão 123456
     
     [Id(5)]
     public int Membership { get; set; } = 0;
@@ -38,4 +38,13 @@ public class DbAccountModel
     
     [Id(11)]
     public int Crowns { get; set; } = 0;
+
+    [Id(12)]
+    public int OpenTamerSlot { get; set; } = 5;
+
+    [Id(13)]
+    public int MaxTamerSlot { get; set; } = 5;
+
+    [Id(14)]
+    public int SubType { get; set; } = 3;  // 1=Skip 2=Pass 3=NewPass  
 }

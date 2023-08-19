@@ -10,8 +10,10 @@ namespace Yggdrasil.Enum
 
     {
         SYS_HANDSHAKE_RES = -1,
+        SYS_PING = -2,
+        SYS_ALIVE = -3,
 
-        Begin = 3300,
+        Login = 3300,
 
         Request,
         Success,
@@ -31,7 +33,7 @@ namespace Yggdrasil.Enum
         ClusterList,
         SelectCluster,
 
-        Change,                 //Alteração do servidor do jogo
+        ChangeCluster,                 //Alteração do servidor do jogo
         GoBackGate,            //do servidor do jogo para o servidor do portão
         GoBackAccount,         //portão -> servidor de conta
 
@@ -40,25 +42,25 @@ namespace Yggdrasil.Enum
         //Autenticação do processo no servidor núcleo com o valor correspondente
 
         KillGate,
-        KillSession,//UserIDX
+        KillSession,                        //UserIDX
 
-        SelectPortal,//requisição e sucesso
-        SelectPortalFailure,//falha
+        SelectPortal,                       //requisição e sucesso
+        SelectPortalFailure,                //falha
 
-        LocalPortal,//sucesso do portal local
+        LocalPortal,                        //sucesso do portal local
 
-        TryLogin,//Se você já está logado e tente novamente, peça ao servidor núcleo para desconectar a pessoa que já está conectada
+        TryLogin,                           //Se você já está logado e tente novamente, peça ao servidor núcleo para desconectar a pessoa que já está conectada
 
-        ChannelInfo,//envia lista de canais e status do canal
+        ChannelInfo,                        //envia lista de canais e status do canal
 
-        Pause,//pausa do servidor
-        Resume,//reinicialização do servidor
+        Pause,                              //pausa do servidor
+        Resume,                             //reinicialização do servidor
 
-        PrimiumStart,//informações do serviço de quarto do pc
-        AlramExpire,//Notificação 5 minutos antes do término do serviço de sala de PC
-        TimeExpire,//encerra o serviço de sala do pc
-        PrimiumChange,//Altera o nível de serviço da sala do PC
-        SelectCharacter,//inicia o jogo selecionando um personagem
+        PrimiumStart,                       //informações do serviço de quarto do pc
+        AlramExpire,                        //Notificação 5 minutos antes do término do serviço de sala de PC
+        TimeExpire,                         //encerra o serviço de sala do pc
+        PrimiumChange,                      //Altera o nível de serviço da sala do PC
+        SelectCharacter,                    //inicia o jogo selecionando um personagem
 
         KoreaNumberCheck,
 
@@ -68,23 +70,38 @@ namespace Yggdrasil.Enum
 
         TEST_GameServerLog,
         ChangeVersionCheck,
-        PCBangServerDown,//Usado para excluir o efeito da sala de PC para todos os usuários quando o servidor de suporte da sala de PC acabar
+        PCBangServerDown,                     //Usado para excluir o efeito da sala de PC para todos os usuários quando o servidor de suporte da sala de PC acabar
 
         SkinUser,
-        KillSession2,//TamerIDX
+        KillSession2,                        //TamerIDX
 
         EncryptionControl,
 
-        TimeServerUserKick,//Sair de todos os usuários fechando o mapa cronometrado
+        TimeServerUserKick,                  //Sair de todos os usuários fechando o mapa cronometrado
         TimeMapClose,
         TimeMapOpen,
 
         ResourceHashReload,
 
+        SvrCertify = 10000,                  // autenticação do servidor
+        HeartBeat,                          // verificação periódica
+        Close,
+        IntegrityHash,						//Pacote de hash de recurso do cliente
+
+        Pass2 = 9800,
+
+        Register,   // 2º cadastro de senha
+
+        OnPass,         // Usar senha secundária ==> Pode ser definido após o registro da senha secundária
+        OffPass,        // 2ª senha não utilizada ==> Pode ser definida após o registro da 2ª senha
+
+        CheckPass2,      // 2ª verificação de senha
+        ChangePass2,     // 2ª troca de senha
+
         End
     };
 
-    public enum Stagio
+    public enum Error
 
     {
         ErrID,
@@ -114,5 +131,18 @@ namespace Yggdrasil.Enum
         EMPTY_TOKEN,
         UNKNOWN_TOKEN,
         UNKNOWN_TOKENTIME,
+    };
+
+    public enum Pass2
+    {
+        NewSet = 0,
+        Registered = 1, //Configuração de senha secundária	
+        Certified = 2,  //Verificação de senha secundária concluída
+        Skiped = 3, //2º estado de senha ignorada
+    };
+
+    public enum PassMax
+    {
+        SecondPassMaxTry = 5,
     };
 }
