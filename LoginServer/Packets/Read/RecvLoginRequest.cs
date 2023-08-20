@@ -53,7 +53,7 @@ namespace LoginServer.Packets.Read
                 .GetGrain<ICharacterManagerGrain>(character!.AccountId)
                 .FindAllAsync()).Count;
             e.Client.SendAsync((new HashCheck()).ToArray());
-            return new LoginRequestWrite(0, loginClient.SubType);
+            return new LoginRequestWrite(0, 1);
         }
     }
 }

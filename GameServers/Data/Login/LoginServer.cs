@@ -77,8 +77,6 @@ public sealed class LoginServers : ServerBase
         }
         switch (reader.Type)
         {
-            case -3:
-                break;
             default:
                 _logger.LogInformation("");
                 break;
