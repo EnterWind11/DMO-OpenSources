@@ -128,7 +128,7 @@ public static class PacketReaderExtensions
 {
   public static void Save(this PacketReader reader)
   {
-    var path = $@"C:\data\packets";
+    var path = $@"Logs\\packets";
     try
     {
       if (!Directory.Exists(path))

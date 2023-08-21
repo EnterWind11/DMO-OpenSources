@@ -46,5 +46,5 @@ public class DbAccountModel
     public int MaxTamerSlot { get; set; } = 5;
 
     [Id(14)]
-    public int SubType { get; set; } = 3;  // 1=Skip 2=Pass 3=NewPass  
+    public int SubType { get; set; } = 1;  // 1=Skip 2=Pass 3=NewPass  
 }

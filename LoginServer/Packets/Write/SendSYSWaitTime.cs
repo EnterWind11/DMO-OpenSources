@@ -7,16 +7,15 @@ using System.Threading.Tasks;
 using Yggdrasil.Server.Network;
 
 namespace LoginServer.Packets.Write;
-public class SendLoginWaitTime : IWritePacket
+public class SendSYSWaitTime : IWritePacket
 {
 
-    public SendLoginWaitTime()
+    public SendSYSWaitTime()
     {
     }
     public byte[] Construct()
     {
         using var writer = new PacketWriter();
-        writer.Type(-3);
         return writer.Finalize();
     }
 }

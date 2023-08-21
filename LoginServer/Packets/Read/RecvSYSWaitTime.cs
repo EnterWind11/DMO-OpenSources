@@ -15,11 +15,11 @@ using Yggdrasil.Interfaces;
 
 namespace LoginServer.Packets.Read
 {
-    public class RecvLoginWaitTime : IReadPacket
+    public class RecvSYSWaitTime : IReadPacket
     {
         private readonly IGrainFactory _grainFactory; // Adicionar a fábrica de grãos
 
-        public RecvLoginWaitTime(IGrainFactory grainFactory) // Construtor para aceitar a fábrica de grãos
+        public RecvSYSWaitTime(IGrainFactory grainFactory) // Construtor para aceitar a fábrica de grãos
         {
             _grainFactory = grainFactory;
         }
@@ -27,7 +27,7 @@ namespace LoginServer.Packets.Read
 
         public async Task<IWritePacket> PrepareAsync(PacketReader reader, ClientDataEventArgs e)
         {
-            return new SendLoginWaitTime ();
+            return new SendSYSWaitTime();
         }
     }
 }
